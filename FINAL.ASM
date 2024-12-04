@@ -94,78 +94,94 @@ main_menu:
 
 register_customer:
     call clear_screen               ; Clear the screen
+    
     lea dx, register_msg            ; Load address of the registration message
     mov ah, 09h
     int 21h                          ; Display registration message
-    call get_input                   ; Get customer name input
-    lea si, input_buffer             ; Load the address of the input buffer into SI
-    lea di, customer_name            ; Load the address of customer_name into DI
-    call copy_string                 ; Copy the input from input_buffer to customer_name
-    
-    ; lea dx, res_pass          
-    ; mov ah, 09h
-    ; int 21h
-    ; call get_password                   ; Get customer name input
-    ; lea si, input_password            ; Load the address of the input buffer into SI
-    ; lea di, customer_password        ; Load the address of customer_name into DI
-    ; call copy_password                 ; Copy the input from input_buffer to customer_name
+
+    lea dx, customer_name
+    mov ah, 0Ah          
+    int 21h
+
+    lea dx, res_pass            ; Load address of the registration message
+    mov ah, 09h
+    int 21h                          ; Display registration message
+
+    lea dx, customer_password
+    mov ah, 0Ah          
+    int 21h
 
     jmp main_menu                    ; Jump to the main menu
 
 login_customer:
-    call clear_screen          ; Clear the screen
-    lea dx, login_msg          ; Display login message
-    mov ah, 09h
+    call clear_screen              ; Clear the screen
+
+    mov ah, 09h        
+    lea dx, customer_name + 2      
+    int 21h  
+
+    mov dl, 0Ah      ; Line feed (LF)
+    mov ah, 02h      ; DOS function to print character in DL
     int 21h
+
+    mov ah, 09h        
+    lea dx, customer_password + 2      
+    int 21h  
+
+    ; Display login message for name input
+    lea dx, login_msg              ; Load address of login message
+    mov ah, 09h
+    int 21h                        ; Call DOS interrupt to display the message
 
     ; Get the login name input from the user
-    call get_input             ; Get login name input from the user
+    call get_input                 ; Call the function to get input from the user
 
-    lea dx, res_pass          
+    lea dx, res_pass               ; Load address of "Enter password" prompt
     mov ah, 09h
-    int 21h
+    int 21h                        ; Call DOS interrupt to display the message
 
-    ; Get the login name input from the user
-    call get_password             ; Get login name input from the user
+    ; Get the password input from the user
+    call get_password              ; Call the function to get password input from the user
 
-    ; Set up pointers for input and customer_name
-    lea si, input_buffer + 2   ; Skip the first two bytes for length in input_buffer
-    lea di, customer_name      ; DI points to customer_name
-    mov cx, 1000                 ; Compare up to 50 bytes (maximum size for the input)
+    ; Now compare the customer_name and input_buffer (login name)
+    lea si, customer_name          ; SI points to customer_name
+    lea di, input_buffer + 2       ; DI points to input_buffer (skip the length byte)
+    mov cx, 1000                   ; Set a maximum length for the comparison (adjust as needed)
 
-    lea si, input_password + 2   ; Skip the first two bytes for length in input_buffer
-    lea di, customer_password     ; DI points to customer_name
-    mov cx, 1000                 ; Compare up to 50 bytes (maximum size for the input)
+compare_name:
+    lodsb                          ; Load byte from customer_name (SI) into AL
+    scasb                          ; Compare byte in AL with byte at input_buffer (DI)
+    jne names_differ               ; If they don't match, jump to names_differ
+    cmp al, '$'                    ; Check if the end of the string is reached
+    je login_success              ; If end of string reached, proceed to password check
+    loop compare_name              ; Continue comparing next byte
 
-    ; Start comparing the strings byte by byte
-compare_loop:
-    lodsb                      ; Load byte from input_buffer (SI) into AL
-    scasb                      ; Compare byte in AL with byte at customer_name (DI)
-    jne strings_differ         ; If they don't match, jump to strings_differ
-    cmp al, '$'                ; Check if the end of the string is reached
-    je strings_equal           ; If end of string reached and no difference, it's a match
-    loop compare_loop          ; Continue comparing next byte
+names_differ:
+    jmp main_menu                  ; If names don't match, jump to main menu
 
-strings_differ:
-    lea dx, invalid_account     ; Display the error message if strings don't match
-    mov ah, 09h
-    int 21h
-    call get_input
-    jmp main_menu              ; Go back to the main menu if they don't match
+; check_password:
+;     ; Compare customer_password with input_password
+;     lea si, customer_password      ; SI points to customer_password
+;     lea di, input_password + 2     ; DI points to input_password (skip the length byte)
+;     mov cx, 1000                   ; Set a maximum length for the comparison (adjust as needed)
 
-strings_equal:
-    lea dx, welcome_msg        ; If strings match, show welcome message
-    mov ah, 09h
-    int 21h
-    call get_input
-    jmp main_menu              ; Go to main menu after successful login
+; compare_password:
+;     lodsb                          ; Load byte from customer_password (SI) into AL
+;     scasb                          ; Compare byte in AL with byte at input_password (DI)
+;     jne passwords_differ           ; If they don't match, jump to passwords_differ
+;     cmp al, '$'                    ; Check if the end of the string is reached
+;     je login_success               ; If both name and password match, jump to login_success
+;     loop compare_password          ; Continue comparing next byte
+
+; passwords_differ:
+;     jmp main_menu                  ; If passwords don't match, jump to main menu
 
 login_success:
-    lea dx, welcome_msg   ; If login is successful, display welcome message
+    lea dx, welcome_msg            ; Load address of welcome message
     mov ah, 09h
-    int 21h
+    int 21h                         ; Display the welcome message
     call get_input
-    jmp main_menu          ; Return to the main menu after successful login
+    jmp main_menu                  ; Jump to main menu after successful login
 
 exit_program:
     call clear_screen
