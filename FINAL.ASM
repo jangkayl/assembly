@@ -49,8 +49,8 @@ goodbye_msg db 0Dh, 0Ah, 'Thank you for using the system. Goodbye!', 0Dh, 0Ah, '
 ; Buffers
 input_buffer db 1000 dup('$')  ; For user input
 input_password db 1000 dup('$')    ; Temporary buffer for password input
-customer_name db 1000 dup('$') ; Stores registered customer name
-customer_password db 1000 dup('$') ; Stores registered customer password
+customer_name db 1000 dup('$') ; Store up to 5 customer names (1000 bytes each)
+customer_password db 1000 dup('$') ; Store up to 5 customer passwords (1000 bytes each)
 admin_name db 1000 dup('$') ; Stores registered admin name
 admin_password db 1000 dup('$') ; Stores registered admin password
 
@@ -93,88 +93,72 @@ main_menu:
     jmp main_menu
 
 register_customer:
-    call clear_screen               ; Clear the screen
-    
+    call clear_screen
     lea dx, register_msg            ; Load address of the registration message
     mov ah, 09h
     int 21h                          ; Display registration message
-
-    lea dx, customer_name
-    mov ah, 0Ah          
+    
+    lea dx, customer_name       ; Prompt for customer name
+    mov ah, 0Ah
     int 21h
 
-    lea dx, res_pass            ; Load address of the registration message
+    lea dx, res_pass                 ; Prompt for password
     mov ah, 09h
-    int 21h                          ; Display registration message
-
-    lea dx, customer_password
-    mov ah, 0Ah          
     int 21h
 
-    jmp main_menu                    ; Jump to the main menu
+    lea dx, customer_password       ; Prompt for customer name
+    mov ah, 0Ah
+    int 21h
+
+    jmp main_menu                    ; Return to main menu
 
 login_customer:
     call clear_screen              ; Clear the screen
 
+    ; Display customer_name
     mov ah, 09h        
-    lea dx, customer_name + 2      
-    int 21h  
+    lea dx, customer_name + 2      ; Skip length and size byte
+    int 21h    
 
-    mov dl, 0Ah      ; Line feed (LF)
-    mov ah, 02h      ; DOS function to print character in DL
+    ; Line feed (LF)
+    mov dl, 0Ah
+    mov ah, 02h
     int 21h
 
+    ; Display customer_password
     mov ah, 09h        
-    lea dx, customer_password + 2      
+    lea dx, customer_password + 2  ; Skip length and size byte
     int 21h  
 
-    ; Display login message for name input
-    lea dx, login_msg              ; Load address of login message
+    ; Display login message
+    lea dx, login_msg              
     mov ah, 09h
-    int 21h                        ; Call DOS interrupt to display the message
+    int 21h                        ; Display login message
 
-    ; Get the login name input from the user
-    call get_input                 ; Call the function to get input from the user
+    call get_input                 ; Get the login name input from the user
 
-    lea dx, res_pass               ; Load address of "Enter password" prompt
-    mov ah, 09h
-    int 21h                        ; Call DOS interrupt to display the message
-
-    ; Get the password input from the user
-    call get_password              ; Call the function to get password input from the user
-
-    ; Now compare the customer_name and input_buffer (login name)
-    lea si, customer_name          ; SI points to customer_name
-    lea di, input_buffer + 2       ; DI points to input_buffer (skip the length byte)
+    ; Compare customer_name and input_buffer
+    lea si, input_buffer + 2     ; SI points to customer_name (skipping length byte)
+    lea di, customer_name + 2       ; DI points to input_buffer (skip length byte)
     mov cx, 1000                   ; Set a maximum length for the comparison (adjust as needed)
 
 compare_name:
-    lodsb                          ; Load byte from customer_name (SI) into AL
-    scasb                          ; Compare byte in AL with byte at input_buffer (DI)
-    jne names_differ               ; If they don't match, jump to names_differ
-    cmp al, '$'                    ; Check if the end of the string is reached
-    je login_success              ; If end of string reached, proceed to password check
-    loop compare_name              ; Continue comparing next byte
+    lodsb                           ; Load byte from customer_name (SI) into AL
+    scasb                           ; Compare byte in AL with byte at input_buffer (DI)
+    jne login_failed                ; If they don't match, jump to login_failed
+    cmp al, '$'                     ; Check if we reached the end of the customer_name
+    je login_name_found             ; If end of string reached, proceed to password check
+    loop compare_name               ; Continue comparing if not end of string
 
-names_differ:
-    jmp main_menu                  ; If names don't match, jump to main menu
+login_name_found:
+    call login_success
 
-; check_password:
-;     ; Compare customer_password with input_password
-;     lea si, customer_password      ; SI points to customer_password
-;     lea di, input_password + 2     ; DI points to input_password (skip the length byte)
-;     mov cx, 1000                   ; Set a maximum length for the comparison (adjust as needed)
-
-; compare_password:
-;     lodsb                          ; Load byte from customer_password (SI) into AL
-;     scasb                          ; Compare byte in AL with byte at input_password (DI)
-;     jne passwords_differ           ; If they don't match, jump to passwords_differ
-;     cmp al, '$'                    ; Check if the end of the string is reached
-;     je login_success               ; If both name and password match, jump to login_success
-;     loop compare_password          ; Continue comparing next byte
-
-; passwords_differ:
-;     jmp main_menu                  ; If passwords don't match, jump to main menu
+login_failed:
+    lea dx, invalid_account         ; Load address of the registration message
+    mov ah, 09h
+    int 21h
+    call get_input
+    jmp main_menu                   ; If names don't match, jump to main menu
 
 login_success:
     lea dx, welcome_msg            ; Load address of welcome message
@@ -182,6 +166,7 @@ login_success:
     int 21h                         ; Display the welcome message
     call get_input
     jmp main_menu                  ; Jump to main menu after successful login
+
 
 exit_program:
     call clear_screen
@@ -233,19 +218,16 @@ get_password proc
 get_password endp
 
 copy_string proc
-    ; Copy string from SI to DI until '$' is encountered
-    lea si, input_buffer + 2 ; Skip size and length byte in input_buffer
-    lea di, customer_name    ; Load the address of customer_name
-    mov cx, 50               ; Max string length to copy (adjust as needed)
+    ; Skip the first two bytes of input_buffer (size and length byte)
+    lea si, input_buffer + 2        ; SI points to the start of the actual string
+    lea di, customer_name           ; DI points to the start of customer_name buffer
+    mov cx, 1000                     ; Max string length to copy (adjust as needed)
 next_char:
-    lodsb                    ; Load byte from SI (input_buffer) to AL
-    stosb                    ; Store byte from AL to DI (customer_name)
-    cmp al, '$'              ; Check if byte is the '$' (string terminator)
-    je done_copying          ; If '$' is found, stop copying
-    loop next_char           ; Loop until 50 characters or '$' is found
-    ; Append '$' to ensure proper string termination if not present
-    mov al, '$'
-    stosb                    ; Store '$' at the end of the string
+    lodsb                           ; Load byte from input_buffer (SI) into AL
+    cmp al, '$'                     ; Check if the byte is the end of the string ('$')
+    je done_copying                 ; If end of string reached, stop copying
+    stosb                           ; Store byte from AL into customer_name (DI)
+    loop next_char                  ; Continue copying if not end of string
 done_copying:
     ret
 copy_string endp
@@ -254,7 +236,7 @@ copy_password proc
     ; Ensure the password input is copied properly
     lea si, input_password + 2  ; Skip the first two bytes for size in the input buffer
     lea di, customer_password    ; Load the address of customer_password buffer
-    mov cx, 50                  ; Max length for the password (adjust as needed)
+    mov cx, 1000                  ; Max length for the password (adjust as needed)
 next_pass:
     lodsb                       ; Load byte from input_password buffer into AL
     stosb                       ; Store byte from AL to customer_password buffer
@@ -264,7 +246,6 @@ next_pass:
 done_copying_pass:
     ret
 copy_password endp
-
 
 main endp
 end main
