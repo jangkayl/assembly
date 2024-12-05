@@ -75,6 +75,7 @@ main_menu:
     lea dx, main_menu_msg
     mov ah, 09h          ; Print the main menu
     int 21h
+    lea dx, input_buffer 
     call get_input       ; Get user's choice
 
     ; Process choice
@@ -89,6 +90,7 @@ main_menu:
     lea dx, invalid_choice
     mov ah, 09h
     int 21h
+    lea dx, input_buffer 
     call get_input
     jmp main_menu
 
@@ -98,9 +100,13 @@ register_customer:
     mov ah, 09h
     int 21h                          ; Display registration message
     
-    lea dx, customer_name       ; Prompt for customer name
-    mov ah, 0Ah
-    int 21h
+    lea dx, input_buffer 
+    call get_input
+
+    ; Copy the input (skip the first two bytes) to customer_name
+    lea si, input_buffer + 2  ; Skip the first two bytes (buffer metadata)
+    lea di, customer_name
+    call copy_string
 
     lea dx, res_pass                 ; Prompt for password
     mov ah, 09h
@@ -133,22 +139,31 @@ login_customer:
     ; Display login message
     lea dx, login_msg              
     mov ah, 09h
-    int 21h                        ; Display login message
+    int 21h                        
 
-    call get_input                 ; Get the login name input from the user
+    lea dx, input_buffer 
+    call get_input               
 
-    ; Compare customer_name and input_buffer
-    lea si, input_buffer + 2     ; SI points to customer_name (skipping length byte)
-    lea di, customer_name + 2       ; DI points to input_buffer (skip length byte)
-    mov cx, 1000                   ; Set a maximum length for the comparison (adjust as needed)
+    lea si, input_buffer + 2  ; Skip the first two bytes
+    lea di, customer_name
+    call compare_strings
 
-compare_name:
-    lodsb                           ; Load byte from customer_name (SI) into AL
-    scasb                           ; Compare byte in AL with byte at input_buffer (DI)
-    jne login_failed                ; If they don't match, jump to login_failed
-    cmp al, '$'                     ; Check if we reached the end of the customer_name
-    je login_name_found             ; If end of string reached, proceed to password check
-    loop compare_name               ; Continue comparing if not end of string
+compare_strings:
+    ; Compare strings byte by byte
+    ; If the strings are equal, carry flag is clear, otherwise it's set
+    compare_loop:
+        mov al, [si]
+        mov bl, [di]
+        cmp al, bl
+        jne compare_done
+        inc si
+        inc di
+        cmp al, '$'
+        je compare_done
+        jmp compare_loop
+    compare_done:
+        ; Set carry flag if strings are not equal
+        ret
 
 login_name_found:
     call login_success
@@ -157,6 +172,7 @@ login_failed:
     lea dx, invalid_account         ; Load address of the registration message
     mov ah, 09h
     int 21h
+    lea dx, input_buffer 
     call get_input
     jmp main_menu                   ; If names don't match, jump to main menu
 
@@ -164,9 +180,9 @@ login_success:
     lea dx, welcome_msg            ; Load address of welcome message
     mov ah, 09h
     int 21h                         ; Display the welcome message
+    lea dx, input_buffer 
     call get_input
     jmp main_menu                  ; Jump to main menu after successful login
-
 
 exit_program:
     call clear_screen
@@ -203,12 +219,10 @@ clear_screen proc
     ret
 clear_screen endp
 
-get_input proc
-    lea dx, input_buffer  ; Input buffer
+get_input:
     mov ah, 0Ah           ; DOS input string function
     int 21h
     ret
-get_input endp
 
 get_password proc
     lea dx, input_password  ; Input buffer for password
@@ -217,20 +231,19 @@ get_password proc
     ret
 get_password endp
 
-copy_string proc
-    ; Skip the first two bytes of input_buffer (size and length byte)
-    lea si, input_buffer + 2        ; SI points to the start of the actual string
-    lea di, customer_name           ; DI points to the start of customer_name buffer
-    mov cx, 1000                     ; Max string length to copy (adjust as needed)
-next_char:
-    lodsb                           ; Load byte from input_buffer (SI) into AL
-    cmp al, '$'                     ; Check if the byte is the end of the string ('$')
-    je done_copying                 ; If end of string reached, stop copying
-    stosb                           ; Store byte from AL into customer_name (DI)
-    loop next_char                  ; Continue copying if not end of string
-done_copying:
-    ret
-copy_string endp
+copy_string:
+    ; Copies string from SI to DI until '$' is found
+    copy_loop:
+        mov al, [si]
+        cmp al, '$'
+        je copy_done
+        mov [di], al
+        inc si
+        inc di
+        jmp copy_loop
+    copy_done:
+        mov byte ptr [di], '$' ; Null-terminate the string
+        ret
 
 copy_password proc
     ; Ensure the password input is copied properly
