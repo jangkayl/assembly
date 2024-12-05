@@ -8,52 +8,51 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 	remainder 	DB 0
 
 ;--- data for logo
-	logo	DB ",--. ,--.,------. ,-----. ", 0dH, 0aH
-			DB "|  .'   /|  .---''  .--./ ", 0dH, 0aH
-			DB "|  .   ' |  `--, |  |     ", 0dH, 0aH
-			DB "|  |\   \|  |`   '  '--'\ ", 0dH, 0aH
-			DB "`--' '--'`--'     `-----' ", 0dH, 0aH
+	logo	DB  0dH, 0aH, "			,--. ,--.,------. ,-----. ", 0dH, 0aH
+			DB "			|  .'   /|  .---''  .--./ ", 0dH, 0aH
+			DB "			|  .   ' |  `--, |  |     ", 0dH, 0aH
+			DB "			|  |\   \|  |`   '  '--'\ ", 0dH, 0aH
+			DB "			`--' '--'`--'     `-----' ", 0dH, 0aH
 			DB "", 0dH, 0aH
-			DB "KYLE'S FAVORITE CHICKEN", 0dH, 0aH
+			DB "		    ~ ~ KYLE'S FAVORITE CHICKEN ~ ~", 0dH, 0aH
 			DB "", 0dH, 0aH
-			DB "JOHN KYLE VILLARAZO 			DECEMBER 2,2024", 0dH, 0aH,"$"
+			DB "	JOHN KYLE VILLARAZO 			DECEMBER 2,2024", 0dH, 0aH,"$"
 ;--- Modules menu
 	StaffMenu	DB 13, 10, "  ==================================================== ", 13, 10
-			DB " [_________________Staff Administration_______________]", 13, 10
-			DB " [                                                    ]", 13, 10
-			DB " [  1.Daily Summary Report                            ]", 13, 10
-			DB " [  2.Restocking                                      ]", 13, 10
-			DB " [  3.Price Adjustment                                ]", 13, 10
-			DB " [  4.Log Out                                         ]", 13, 10
+			DB " [	_________________Staff Administration_______________	]", 13, 10
+			DB " [                                                    		]", 13, 10
+			DB " [  	  1.Daily Summary Report                            ]", 13, 10
+			DB " [  	  2.Restocking                                      ]", 13, 10
+			DB " [  	  3.Price Adjustment                                ]", 13, 10
+			DB " [  	  4.Log Out                                         ]", 13, 10
 			DB "  ==================================================== ", 13, 10, "$"
 
-	CustomerMenu	DB 13, 10, "  ==================================================== ", 13, 10
-			DB " [______KFC ORDERING SYSTEM_______]", 13, 10
-			DB " [                                                    ]", 13, 10
-			DB " [  1.Order Food & Beverages                          ]", 13, 10
-			DB " [  2.Membership Information                          ]", 13, 10
-			DB " [  3.Log Out                                         ]", 13, 10
-			DB "  ==================================================== ", 13, 10, "$"
+	CustomerMenu	DB 13, 10, "  	==================================================== ", 13, 10
+			DB " 	[        ______ KFC ORDERING SYSTEM _______          ]", 13, 10
+			DB " 	[                                                    ]", 13, 10
+			DB " 	[  	1.Order Food & Beverages                      ]", 13, 10
+			DB " 	[  	2.Membership Information                      ]", 13, 10
+			DB " 	[  	3.Log Out                                     ]", 13, 10
+			DB "  	==================================================== ", 13, 10, "$"
 	staffPrompt	DB 13, 10, "Enter Your Option(1-4) > $"
-	customerPrompt	DB 13, 10, "Enter Your Option(1-3) > $"
+	customerPrompt	DB 13, 10, "	Enter Your Option(1-3) > $"
 ;------ Jun
-         failmsg            DB  0dh, 0ah, "Please enter [1-4]! Press any to continue$"
+         failmsg            DB  0dh, 0ah, "Please enter [1-3]! Press any to continue$"
          nextline            DB  0dh, 0ah, "$"
          ;---main page
-         firstPage          DB  0dh, 0ah,"Welcome to KFC!"
-                            DB  0dh, 0ah, "+-----------------+"
-                            DB  0dh, 0ah, "| 1. LOG IN       |"
-                            DB  0dh, 0ah, "| 2. REGISTER     |"
-                            DB  0dh, 0ah, "| 3. Guest        |"
-                            DB  0dh, 0ah, "| 4. Exit         |"
-                            DB  0dh, 0ah, "+-----------------+"
-                            DB  0dh, 0ah, "Enter Your Option(1-4) > $"
+         firstPage          DB  0dh, 0ah,"			   Welcome to KFC!"
+                            DB  0dh, 0ah, "			+----------------------+"
+                            DB  0dh, 0ah, "			|      1) Log In       |"
+                            DB  0dh, 0ah, "			|      2) Register     |"
+                            DB  0dh, 0ah, "			|      3) Exit         |"
+                            DB  0dh, 0ah, "			+----------------------+"
+                            DB  0dh, 0ah, "			Enter Your Option(1-3) > $"
          choosen            DB  ?
 
          ;---register page
          secondPage         DB  0dh, 0ah, "Welcome to Register Page!"
                             DB  0dh, 0ah, "Please Fill in all the details to register.$"
-         rgt1               DB  0dh, 0ah, "Please enter your name :$"
+         rgt1               DB  0dh, 0ah, "Please enter your name : $"
          rgt2               DB  0dh, 0ah, "Please enter your ID number not including(-) :$"
          rgt3               DB  0dh, 0ah, "Please enter your Phone Number not including(-) :$"
          rgt4               DB  0dh, 0ah, "Please enter your Password in any 8 or above Alphanumeric symbols :$"
@@ -64,14 +63,14 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
          rgt9               DB  0dh, 0ah, "Register Successful! Press any back to home Page. $"
          rgt10              DB  0dh, 0ah, "Fail to register.Press any back to home Page. $"
          confirmrgt         DB  0dh, 0ah, "Please comfirm Your details. "
-                            DB  0dh, 0ah, "Confirm to register [Y=yes, N=no] :$. "
-         rgtconf1           DB  0dh, 0ah, "Confirm your Name ? [Y=yes, N=no] :$. "
-         rgtconf2           DB  0dh, 0ah, "Confirm your ID Number ? [Y=yes, N=no] :$. "
-         rgtconf3           DB  0dh, 0ah, "Confirm your Phone Number ? [Y=yes, N=no] :$. "
-         rgtconf4           DB  0dh, 0ah, "Confirm Your Password? [Y=yes, N=no] :$. "
+                            DB  0dh, 0ah, "Confirm to register [ Y=yes, N=no ] :$. "
+         rgtconf1           DB  0dh, 0ah, "Confirm your Name ? [ Y=yes, N=no ] :$. "
+         rgtconf2           DB  0dh, 0ah, "Confirm your ID Number ? [ Y=yes, N=no ] :$. "
+         rgtconf3           DB  0dh, 0ah, "Confirm your Phone Number ? [ Y=yes, N=no ] :$. "
+         rgtconf4           DB  0dh, 0ah, "Confirm Your Password? [ Y=yes, N=no ] :$. "
          salahinsert        DB  0dh, 0ah, "Please key in just Y or N !!$. "
          salahname          DB  0dh, 0ah, "Please key in 3 word or above name!!$. "
-         salahic            DB  0dh, 0ah, "Please key in just 12 numbers!!$. "
+         salahic            DB  0dh, 0ah, "Please key in just 9 numbers!!$. "
          salahphone         DB  0dh, 0ah, "Please key in just 10/11 numbers!!$. "
          salahpass          DB  0dh, 0ah, "Please key in 8 or above as password!!$. "
          choosergt          DB  ?
@@ -127,18 +126,18 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
          ;---logout
          lgout              DB  0dh, 0ah, "Are you sure want to log out?"
                             DB  0dh, 0ah, "+-----------------------+"
-                            DB  0dh, 0ah, "| 1.Back To Menu        |"
-                            DB  0dh, 0ah, "| 2.Log Out             |"
+                            DB  0dh, 0ah, "|    1) Back To Menu    |"
+                            DB  0dh, 0ah, "|    2) Log Out         |"
                             DB  0dh, 0ah, "+-----------------------+$"
          logoutNum          DB  ?
 ;------ Jess
 ;--- data for order menu
 	order		DB " .__________________.", 0dH, 0aH
 			DB " |___ORDER OPTION___|", 0dH, 0aH
-			DB " |  1. Dine In      |", 0dH, 0aH
-			DB " |  2. Delivery     |", 0dH, 0aH
-			DB " |  3. Take Away    |", 0dH, 0aH
-			DB " |  4. Back to Menu |", 0dH, 0aH
+			DB " |  1) Dine In      |", 0dH, 0aH
+			DB " |  2) Delivery     |", 0dH, 0aH
+			DB " |  3) Take Away    |", 0dH, 0aH
+			DB " |  4) Back to Menu |", 0dH, 0aH
 			DB " '------------------'", "$"
 	ostate		DB "Enter order option : $"
 	onum		DB ?
@@ -149,9 +148,9 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 	menuH		DB " ._____________________________________________________.", 0dH, 0aH, "$"
 	food		DB " |______________________FOOD MENU______________________|", 0dH, 0aH
 			DB " |---------------MAIN DISH---------------|--Price(PHP)--|", 0dH, 0aH, "$"
-	food1		DB " | NL1 Chicken Kurdon				     |    ", "$"
-	food2		DB " | NL2 Chicken Biryani				     |    ", "$"
-	food3		DB " | NL3 Chickenless Chicken			     |    ", "$"
+	food1		DB " | 	1) Chicken Kurdon				     |    ", "$"
+	food2		DB " | 	2) Chicken Biryani				     |    ", "$"
+	food3		DB " | 	3) Chickenless Chicken			     |    ", "$"
 	menuL		DB " '-----------------------------------------------------'", 0dH, 0aH,"$"
 	menuE		DB "    |", 0dH, 0aH, "$"
 	fprice		DB 9, 10, 11
@@ -167,10 +166,10 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 ;--- data for beverage menu
 	beverage	DB " |____________________BEVERAGE MENU____________________|", 0dH, 0aH
 			DB " |---------------BEVERAGES---------------|--Price(PHP)--|", 0dH, 0aH, "$"
-	beverage1	DB " | D1 Coke Zero                          |    ", "$"
-	beverage2	DB " | D2 Orange Juice                       |    ", "$"
-	beverage3	DB " | D3 Apple Juice                        |    ", "$"
-	beverage4	DB " | D4 Mango Float                        |    ", "$"
+	beverage1	DB " | 	1) Coke Zero                          |    ", "$"
+	beverage2	DB " | 	2) Orange Juice                       |    ", "$"
+	beverage3	DB " | 	3) Apple Juice                        |    ", "$"
+	beverage4	DB " | 	4) Mango Float                        |    ", "$"
 	bprice		DB 2, 5, 5, 1
 	bpriceD		DB 50, 30, 30, 00
 	bstate		DB "Enter beverage choice and amount (max amount is 9, 0 to skip): $"
@@ -180,8 +179,8 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 ;--- data for order module
 	module		DB " .__________________.", 0dH, 0aH
 			DB " |______MODULE______|", 0dH, 0aH
-			DB " | 1. Make Payment  |", 0dH, 0aH
-			DB " | 2. Cancel order  |", 0dH, 0aH
+			DB " | 1) Make Payment  |", 0dH, 0aH
+			DB " | 2) Cancel order  |", 0dH, 0aH
 			DB " '------------------'", "$"
 	mstate		DB "Enter module option : $"
 	mnum		DB ?
@@ -277,9 +276,9 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 	frameH		DB	" ._____________________________________.", 0dH, 0aH,"$"
 	category	DB	" |______________F&B MENU_______________|", 0dH, 0aH
 			DB 	" |--------------CATEGORY---------------|", 0dH, 0aH
-			DB	" | 1.Food                              |", 0dH, 0aH
-			DB	" | 2.Beverage                          |", 0dH, 0aH
-			DB	" | 3.Exit                              |", 0dH, 0aH,"$"
+			DB	" | 1. Food                             |", 0dH, 0aH
+			DB	" | 2. Beverage                         |", 0dH, 0aH
+			DB	" | 3. Exit                             |", 0dH, 0aH,"$"
 	frameL		DB	" '-------------------------------------'", 0dH, 0aH,"$"
 	prompt1		DB	"Enter the Category(1-3)   > $"
 	prompt2		DB	"Enter the Adjustment(1-5) > $"
@@ -325,13 +324,13 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 	prompt10	DB	13, 10, "Enter the Report Type(1-3)  > $"
 	R1title		DB	13, 10, "                      Earning Report on $"
 	R2title		DB	13, 10, "                      Expenses Report on $"
-	fd1		DB	" | NL1 Nasi Lemak with Fried Chicken     |   ", "$"
-	fd2		DB 	" | NL2 Nasi Lemak with Rendang Chicken   |   ", "$"
-	fd3		DB 	" | NL3 Nasi Lemak with Sambal Petai      |   ", "$"
-	bv1		DB 	" | D1 Coffee                             |   ", "$"
-	bv2		DB 	" | D2 Orange Juice                       |   ", "$"
-	bv3		DB 	" | D3 Apple Juice                        |   ", "$"
-	bv4		DB 	" | D4 Sky Juice                          |   ", "$"
+	fd1		DB	" | Chicken Kurdon                        |   ", "$"
+	fd2		DB 	" | Chicken Biryani                       |   ", "$"
+	fd3		DB 	" | Chickenless Chicken                   |   ", "$"
+	bv1		DB 	" | Coke Zero                             |   ", "$"
+	bv2		DB 	" | Orange Juice                          |   ", "$"
+	bv3		DB 	" | Apple Juice                           |   ", "$"
+	bv4		DB 	" | Mango Float                           |   ", "$"
 	thirdD		DB	0
 	QTYNLH		DB	3 DUP (0)
 	QTYNL		DB	3 DUP (0)
@@ -379,26 +378,26 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 ;------ Nic
 ;--- data for membership
 	memStart	DB	"._____________________________________________________.", 0dH, 0aH
-			DB	"|                  |  Membership  |                   |", 0dH, 0aH
-			DB	"|                  '--------------'                   |", 0dH, 0aH, "$"
-	memHeader	DB	" .___________________________________________________.", 0dH, 0aH
-			DB	" |_____________________Membership____________________|", 0dH, 0aH, "$"
-	memExp		DB	" |---------------------INFORMATION-------------------|", 0dH, 0aH, "$"
-	memRenew	DB	" |-----------------------OPTION----------------------|", 0dH, 0aH
-			DB	" |        1. 3 Months                PHP 20.00        |", 0dH, 0aH
-			DB      " |        2. 6 Months                PHP 35.00        |", 0dH, 0aH
-			DB	" |        3. 1 Year                  PHP 45.00        |", 0dH, 0aH
-			DB	" |        4. Return                                  |", 0dH, 0aH, "$"
-	memCate		DB	" |----------------------CATEGORY---------------------|", 0dH, 0aH
-			DB	" |            1. View Membership Duration            |", 0dH, 0aH
-			DB      " |            2. Renew Membership                    |", 0dH, 0aH, "$"
-	memDuraBefore	DB	" |----------------------DURATION---------------------|", 0dH, 0aH
-			DB	" |                                                   |", 0dH, 0aH
-			DB	" |          Membership before : ", "$"
-	memDuraAfter	DB	" |          Membership left   : ", "$"
-	memDuraEnd	DB	"           |", 0dH, 0aH
-			DB	" |                                                   |", 0dH, 0aH, "$"
-	memDaysDur1	DB	" |---------------------MEMBERSHIP--------------------|", 0dH, 0aH
+				DB	"|                  |  Membership  |                   |", 0dH, 0aH
+				DB	"|                  '--------------'                   |", 0dH, 0aH, "$"
+	memHeader	DB	" 	.___________________________________________________.", 0dH, 0aH
+				DB	" 	|_____________________Membership____________________|", 0dH, 0aH, "$"
+	memExp		DB	" 	|---------------------INFORMATION-------------------|", 0dH, 0aH, "$"
+	memRenew	DB	" 	|-----------------------OPTION----------------------|", 0dH, 0aH
+				DB	" 	|        1. 3 Months                PHP 20.00       |", 0dH, 0aH
+				DB  " 	|        2. 6 Months                PHP 35.00       |", 0dH, 0aH
+				DB	" 	|        3. 1 Year                  PHP 45.00       |", 0dH, 0aH
+				DB	" 	|        4. Return                                  |", 0dH, 0aH, "$"
+	memCate		DB	" 	|----------------------CATEGORY---------------------|", 0dH, 0aH
+				DB	" 	|            1. View Membership Duration            |", 0dH, 0aH
+				DB  " 	|            2. Renew Membership                    |", 0dH, 0aH, "$"
+	memDuraBefore	DB	" 	|----------------------DURATION---------------------|", 0dH, 0aH
+					DB	" 	|                                                   |", 0dH, 0aH
+					DB	" 	|          Membership before : ", "$"
+	memDuraAfter 	DB	" 	|          Membership left   : ", "$"
+	memDuraEnd		DB	"           |", 0dH, 0aH
+					DB	" 	|                                                   |", 0dH, 0aH, "$"
+	memDaysDur1		DB	" |---------------------MEMBERSHIP--------------------|", 0dH, 0aH
 			DB	" |---------------------DAYS LEFT---------------------|", 0dH, 0aH
 			DB	" |          Membership Day(s) Left    : ", "$"
 	memDaysDur2	DB	" |          Membership Month(s) Left  : ", "$"
@@ -406,7 +405,7 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 	memDaysEnd1	DB	"           |", 0dH, 0aH, "$"
 	memDaysEnd2	DB	"           |", 0dH, 0aH, "$"
 	memDaysEnd3	DB	"         |", 0dH, 0aH, "$"
-	memFooter	DB	" '---------------------------------------------------'", 0dH, 0aH, "$"
+	memFooter	DB	" 	'---------------------------------------------------'", 0dH, 0aH, "$"
 	newMemMsg	DB	"None      ", "$"
 	memPrompt1	DB	"Do you want to be a member ? (Y=Yes|N=No|Q=Main Menu) > $"
 	memPrompt2	DB	"|_____________________________________________________|", 0dH, 0aH
@@ -416,7 +415,7 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 			DB	"'-----------------------------------------------------'", 0dH, 0aH, "$"
 	memPrompt3	DB	"Enter choice here >", "$"
 	cancPrompt1	DB  	"Enter choice here >", "$"
-	renewPrompt	DB	"Enter Duration of renewal :",0dH, 0aH, "$"
+	renewPrompt	DB	"		Enter Duration of renewal :",0dH, 0aH, "$"
 	DuraConfirm	DB	"Confirm date ? (Y=Yes|N=No|Q=return)",0dH, 0aH, "$"
 	errorYorN	DB	"Invalid input, Please enter (Y=Yes|N=No)",0dH, 0aH, "$"
 	error1or2	DB	"Invalid input, Please enter 1 or 2 only",0dH, 0aH, "$"
@@ -518,18 +517,18 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 	inputCancel	DB ?
 	cancelAmount	DB 0
 ;--- data for Summary
-	summary		DB 0dH, 0aH, ".__________________________________________.", 0dH, 0aH
-			DB "|_____________OVERALL SUMMARY______________|", 0dH, 0aH, "$"
-	memreg   	DB "| 1. Attempt of Registration        - $"
-	memlogin	DB "| 2. Attempt of Log In              - $"
-	memOrder	DB "| 3. Attempt of Member Ordering     - $"
-	guestOrder	DB "| 4. Attempt of Non-member Ordering - $"
-	canOrder	DB "| 5. Attempt of Order Cancellation  - $"
-	restockMsg	DB "| 6. Attempt of Restocking          - $"
-	priceAdjust	DB "| 7. Attempt of Price Adjustment    - $"
-	reporting	DB "| 8. Attempt of Report Generation   - $"
-	space3		DB "   |", 0dH, 0aH, "$"
-	summaryL	DB "'------------------------------------------'", 0dH, 0aH, "$"
+	summary		DB 0dH, 0aH, "		.__________________________________________.", 0dH, 0aH
+				DB "		|_____________OVERALL SUMMARY______________|", 0dH, 0aH, "$"
+	memreg   	DB "		| 1. Attempt of Registration        - $"
+	memlogin	DB "		| 2. Attempt of Log In              - $"
+	memOrder	DB "		| 3. Attempt of Member Ordering     - $"
+	guestOrder	DB "		| 4. Attempt of Non-member Ordering - $"
+	canOrder	DB "		| 5. Attempt of Order Cancellation  - $"
+	restockMsg	DB "		| 6. Attempt of Restocking          - $"
+	priceAdjust	DB "		| 7. Attempt of Price Adjustment    - $"
+	reporting	DB "		| 8. Attempt of Report Generation   - $"
+	space3		DB "   		|", 0dH, 0aH, "$"
+	summaryL	DB "		'------------------------------------------'", 0dH, 0aH, "$"
 	numofMemO	DB 0
 	numofGuestO	DB 0
 	numofReg	DB 0
@@ -604,8 +603,6 @@ continue1:
       CMP choosen, "2"
       JE registerPage1
       CMP choosen, "3"
-      JE guestPage1
-      CMP choosen, "4"
       JE exit1
       JNE wrongNum
 
@@ -784,7 +781,7 @@ goodic:
       int 21h
 
       mov al, actic
-      cmp al, 12
+      cmp al, 9
       jl erroric
       jge phoneRegis
 
@@ -1076,7 +1073,7 @@ lgnIC:
         lea dx, UserN
         int 21h
 
-        mov cx, 12
+        mov cx, 9
         mov si, 0
 
 roomer:
