@@ -1,4 +1,7 @@
-TITLE APLUS NASI LEMAK ORDERING SYSTEM	
+; System Name: CITU CanteenClick Online Food Ordering System
+; Programmer name: Rene John Sitoy
+; November 22, 2024
+
 .MODEL SMALL
 .STACK 
 .DATA
@@ -7,16 +10,17 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 	quotient 	DB 0
 	remainder 	DB 0
 
-;--- data for logo
-	logo	DB ",--. ,--.,------. ,-----. ", 0dH, 0aH
-			DB "|  .'   /|  .---''  .--./ ", 0dH, 0aH
-			DB "|  .   ' |  `--, |  |     ", 0dH, 0aH
-			DB "|  |\   \|  |`   '  '--'\ ", 0dH, 0aH
-			DB "`--' '--'`--'     `-----' ", 0dH, 0aH
-			DB "", 0dH, 0aH
-			DB "KYLE'S FAVORITE CHICKEN", 0dH, 0aH
-			DB "", 0dH, 0aH
-			DB "JOHN KYLE VILLARAZO 			DECEMBER 2,2024", 0dH, 0aH,"$"
+	logo	DB 201, 205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,187, 0dH
+			DB 186,"                                                                              ", 186, 13
+			DB 186,"                                                                              ", 186, 13
+			DB 186,"     ##    ##  ##  ###  ##   ####   ##   ##   ##    ####  ##   ##  ##  ##     ", 186, 13
+			DB 186,"     ##    ##  ##  #### ##  ##  ##  ##   ##   ##     ##   ###  ##  ## ##      ", 186, 13
+			DB 186,"     ##    ##  ##  ## # ##  ##      #######   ##     ##   ## # ##  ####       ", 186, 13
+			DB 186,"     ##    ##  ##  ## ####  ##  ##  ##   ##   ##     ##   ##  ###  ## ##      ", 186, 13
+			DB 186,"     #####  ####   ##   ##   ####   ##   ##   ##### ####  ##   ##  ##  ##     ", 186, 13
+			DB 186,"                                                                              ", 186, 13
+			DB 186,"                                                                              ", 186, 13
+			DB 204,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205, 185, 13, "$"
 ;--- Modules menu
 	StaffMenu	DB 13, 10, "  ==================================================== ", 13, 10
 			DB " [_________________Staff Administration_______________]", 13, 10
@@ -28,7 +32,7 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 			DB "  ==================================================== ", 13, 10, "$"
 
 	CustomerMenu	DB 13, 10, "  ==================================================== ", 13, 10
-			DB " [______KFC ORDERING SYSTEM_______]", 13, 10
+			DB " [______A PLUS NASI LEMAK HOUSE ORDERING SYSTEM_______]", 13, 10
 			DB " [                                                    ]", 13, 10
 			DB " [  1.Order Food & Beverages                          ]", 13, 10
 			DB " [  2.Membership Information                          ]", 13, 10
@@ -39,26 +43,28 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 ;------ Jun
          failmsg            DB  0dh, 0ah, "Please enter [1-4]! Press any to continue$"
          nextline            DB  0dh, 0ah, "$"
-         ;---main page
-         firstPage          DB  0dh, 0ah,"Welcome to KFC!"
-                            DB  0dh, 0ah, "+-----------------+"
-                            DB  0dh, 0ah, "| 1. LOG IN       |"
-                            DB  0dh, 0ah, "| 2. REGISTER     |"
-                            DB  0dh, 0ah, "| 3. Guest        |"
-                            DB  0dh, 0ah, "| 4. Exit         |"
-                            DB  0dh, 0ah, "+-----------------+"
-                            DB  0dh, 0ah, "Enter Your Option(1-4) > $"
+         ;---main page		
+         firstPage			DB 186,"                                                                              ", 186, 13
+		 			        DB  186, 0dh, 0ah,186,"                      Welcome to CIT-U Canteen's Lunch Link!                  ",186
+		 					DB  0dh, 0ah,199,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196, 182, 13
+                            DB  0dh, 0ah,186, "                   +----------------------------------------+",186
+                            DB  0dh, 0ah,186, "                   |               1. LOG IN                |",186
+                            DB  0dh, 0ah,186, "                   |               2. REGISTER              |",186
+                            DB  0dh, 0ah,186, "                   |               3. Guest                 |",186
+                            DB  0dh, 0ah,186, "                   |               4. Exit                  |",186
+                            DB  0dh, 0ah,186, "                   +----------------------------------------+",186
+                            DB  0dh, 0ah,186, "                        Enter Your Option(1-4) : $"
          choosen            DB  ?
 
          ;---register page
          secondPage         DB  0dh, 0ah, "Welcome to Register Page!"
                             DB  0dh, 0ah, "Please Fill in all the details to register.$"
          rgt1               DB  0dh, 0ah, "Please enter your name :$"
-         rgt2               DB  0dh, 0ah, "Please enter your ID number not including(-) :$"
+         rgt2               DB  0dh, 0ah, "Please enter your IC number not including(-) :$"
          rgt3               DB  0dh, 0ah, "Please enter your Phone Number not including(-) :$"
          rgt4               DB  0dh, 0ah, "Please enter your Password in any 8 or above Alphanumeric symbols :$"
          rgt5               DB  0dh, 0ah, "Your Name is $"
-         rgt6               DB  0dh, 0ah, "Your ID number is $"
+         rgt6               DB  0dh, 0ah, "Your ic number is $"
          rgt7               DB  0dh, 0ah, "Your Phone Number is $"
          rgt8               DB  0dh, 0ah, "Your Password is $"
          rgt9               DB  0dh, 0ah, "Register Successful! Press any back to home Page. $"
@@ -66,7 +72,7 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
          confirmrgt         DB  0dh, 0ah, "Please comfirm Your details. "
                             DB  0dh, 0ah, "Confirm to register [Y=yes, N=no] :$. "
          rgtconf1           DB  0dh, 0ah, "Confirm your Name ? [Y=yes, N=no] :$. "
-         rgtconf2           DB  0dh, 0ah, "Confirm your ID Number ? [Y=yes, N=no] :$. "
+         rgtconf2           DB  0dh, 0ah, "Confirm your Ic Number ? [Y=yes, N=no] :$. "
          rgtconf3           DB  0dh, 0ah, "Confirm your Phone Number ? [Y=yes, N=no] :$. "
          rgtconf4           DB  0dh, 0ah, "Confirm Your Password? [Y=yes, N=no] :$. "
          salahinsert        DB  0dh, 0ah, "Please key in just Y or N !!$. "
@@ -98,10 +104,10 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 
          ;---login page
          thirdPage          DB  0dh, 0ah, "Welcome to Login Page!"
-                            DB  0dh, 0ah, "Please Fill in the ID number and Password to Login.$"
-         lgn1               DB  0dh, 0ah, "Please enter your ID number(without [-])  :$"
+                            DB  0dh, 0ah, "Please Fill in the IC number and Password to Login.$"
+         lgn1               DB  0dh, 0ah, "Please enter your IC number(without [-])  :$"
          lgn2               DB  0dh, 0ah, "Please enter your Password  :$"
-         lgn3               DB  0dh, 0ah, "Wrong ID Number! Please press any to login again!$"
+         lgn3               DB  0dh, 0ah, "Wrong IC Number! Please press any to login again!$"
          lgn4               DB  0dh, 0ah, "Wrong Password! Please press any to login agin!$"
          validate           DB  0dh, 0ah, "Login Successul!$"
          validatestaff      DB  0dh, 0ah, "Login Successul! You are in Staff mode. $"
@@ -149,9 +155,9 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 	menuH		DB " ._____________________________________________________.", 0dH, 0aH, "$"
 	food		DB " |______________________FOOD MENU______________________|", 0dH, 0aH
 			DB " |---------------MAIN DISH---------------|--Price(PHP)--|", 0dH, 0aH, "$"
-	food1		DB " | NL1 Chicken Kurdon				     |    ", "$"
-	food2		DB " | NL2 Chicken Biryani				     |    ", "$"
-	food3		DB " | NL3 Chickenless Chicken			     |    ", "$"
+	food1		DB " | FR1 Fried Rice with Fried Chicken             |    ", "$"
+	food2		DB " | FR2 Fried Rice with Buffalo Wings             |    ", "$"
+	food3		DB " | FR3 Fried Rice with Pepper Steak              |    ", "$"
 	menuL		DB " '-----------------------------------------------------'", 0dH, 0aH,"$"
 	menuE		DB "    |", 0dH, 0aH, "$"
 	fprice		DB 9, 10, 11
@@ -159,18 +165,18 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 	fstate		DB "Enter food choice and amount (max amount is 9, 0 to skip): $"
 	fnum		DB 1, 2, 3
 	fqty		DB 3 DUP (0)
-	addOn		DB "Do you want to add on( Y=yes | N=no )? $"
+	addOn		DB "Do you want to add on(Y=yes|N=no)? $"
 	eromsgf		DB "Please enter input from 1 to 3 only!! $"
 	input1		DB 1
 	nomorefood	DB "Sorry, it is out of stock. $"
 	nomorefood1	DB "Insufficient stock left. Item left is $"
 ;--- data for beverage menu
 	beverage	DB " |____________________BEVERAGE MENU____________________|", 0dH, 0aH
-			DB " |---------------BEVERAGES---------------|--Price(PHP)--|", 0dH, 0aH, "$"
-	beverage1	DB " | D1 Coke Zero                          |    ", "$"
+			DB " |---------------BEVERAGES---------------|--Price(RM)--|", 0dH, 0aH, "$"
+	beverage1	DB " | D1 Coffee                             |    ", "$"
 	beverage2	DB " | D2 Orange Juice                       |    ", "$"
-	beverage3	DB " | D3 Apple Juice                        |    ", "$"
-	beverage4	DB " | D4 Mango Float                        |    ", "$"
+	beverage3	DB " | D3 Cucumber Lemonade                  |    ", "$"
+	beverage4	DB " | D4 Diet Coke                          |    ", "$"
 	bprice		DB 2, 5, 5, 1
 	bpriceD		DB 50, 30, 30, 00
 	bstate		DB "Enter beverage choice and amount (max amount is 9, 0 to skip): $"
@@ -221,7 +227,7 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 	totalstate	DB "                                            TOTAL : PHP  $"
 	total		DW 0
 	totalD		DW 0
-	cashstate	DB "Enter Cash amount : PHP $"
+	cashstate	DB "Enter Cash amount : PH $"
 	cashIN		DB 4 DUP ("$")
 	cashIND		DB 2 DUP (0)
 	cash		DW 0
@@ -229,7 +235,7 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 	eromsgc		DB "Please enter in the format of PHP xxx.xx !", 0dH, 0aH, "$"
 	eromsgc1	DB "Insufficient amount of cash has been entered. Please enter again.", 0dH, 0aH, "$"
 	errcount	DB 0
-	chgstate	DB "Change : PHP $"
+	chgstate	DB "Change : PH $"
 	change		DW 0
 	changeD		DB 0
 	paymentE	DB "   \Thank you for coming/", 0dH, 0aH
@@ -262,12 +268,12 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 	promptsq	DB "Enter the Restock quantity (Max Stock Qty = 999) : $"
 	SqtyIN		DB 4 DUP ("$")
 	sqty		DW 0
-	promptsp	DB "Enter the price used to Restock(PHP xxx.xx) : PHP $"
+	promptsp	DB "Enter the price used to Restock(RM xxx.xx) : PHP $"
 	stockIN		DB 4 DUP ("$")
 	stockIND	DB 2 DUP (0)
 	sprice		DW 0
 	spriceD		DB 0
-	getfnum		DB "Enter the food : NL$"
+	getfnum		DB "Enter the food : FR$"
 	getbnum		DB "Enter the drink : D$"
 	gnum		DB ?
 	errmsgrange	DB "The total have exceeded 999! Please enter again! $"
@@ -284,7 +290,7 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 	prompt1		DB	"Enter the Category(1-3)   > $"
 	prompt2		DB	"Enter the Adjustment(1-5) > $"
 	prompt3		DB	"Enter the Value to Increase(00.00 to quit)   > $"
-	prompt4		DB	"Enter the food  > NL$"
+	prompt4		DB	"Enter the food  > FR$"
 	prompt5		DB	"Enter the drink > D$"
 	prompt6		DB	"Enter the Value to Decrease(00.00 to quit)   > $"
 	prompt7		DB	"Confirm to Proceed(Y=yes|N=no)  > $"
@@ -325,13 +331,13 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 	prompt10	DB	13, 10, "Enter the Report Type(1-3)  > $"
 	R1title		DB	13, 10, "                      Earning Report on $"
 	R2title		DB	13, 10, "                      Expenses Report on $"
-	fd1		DB	" | NL1 Nasi Lemak with Fried Chicken     |   ", "$"
-	fd2		DB 	" | NL2 Nasi Lemak with Rendang Chicken   |   ", "$"
-	fd3		DB 	" | NL3 Nasi Lemak with Sambal Petai      |   ", "$"
+	fd1		DB	" | FR1 Fried Rice with Fried Chicken     |   ", "$"
+	fd2		DB 	" | FR2 Fried Rice with Buffalo Wings   |   ", "$"
+	fd3		DB 	" | FR3 Fried Rice with Pepper Steak      |   ", "$"
 	bv1		DB 	" | D1 Coffee                             |   ", "$"
 	bv2		DB 	" | D2 Orange Juice                       |   ", "$"
-	bv3		DB 	" | D3 Apple Juice                        |   ", "$"
-	bv4		DB 	" | D4 Sky Juice                          |   ", "$"
+	bv3		DB 	" | D3 Cucumber Lemonade                        |   ", "$"
+	bv4		DB 	" | D4 Diet Coke                          |   ", "$"
 	thirdD		DB	0
 	QTYNLH		DB	3 DUP (0)
 	QTYNL		DB	3 DUP (0)
@@ -369,7 +375,7 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 	Rmsg4		DB 13, 10, "                                         Rounding Adj : - PHP 00.0$"
 	Rmsg5		DB 13, 10, "                                         Rounding Adj : + PHP 00.0$"
 	roundingVal	DB 0
-	sale		DB 13, 10, "              ! BEST-SELLING CHICKEN OF THE DAY$"
+	sale		DB 13, 10, "              ! BEST-SELLING FRIED RICE OF THE DAY FR$"
 	Findex		DB 0
 	compareval	DW 3 DUP (?)
 	reFqty		DW 0, 0, 0
@@ -503,7 +509,7 @@ TITLE APLUS NASI LEMAK ORDERING SYSTEM
 			DB " |              2. Beverage               |", 0dh, 0ah
 			DB " |              3. Return                 |", 0dh, 0ah
 			DB " '----------------------------------------'", 0dh, 0ah, "$"
-	cancelMsgF	DB " Choose an item to cancel (0__ to return| NL_ for food) : ", 0dh, 0ah, "$"
+	cancelMsgF	DB " Choose an item to cancel (0__ to return| FR_ for food) : ", 0dh, 0ah, "$"
 	cancelMsgB	DB " Choose an item to cancel (0__ to return| D_ for bev) : ", 0dh, 0ah, "$"
 	errorCanc	DB " Invalid input, Please try again.", 0dh ,0ah, "$"
 	amountPromptC	DB " Enter the amount that you wish to cancel :", 0dh, 0ah, "$"
